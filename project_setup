@@ -1,0 +1,107 @@
+# Wytyczne: Bootstrap projektu React (Vite + TS) – instalacja, struktura, setup środowiska
+### Cel
+RAG/Agent (Cursor) ma samodzielnie utworzyć spójny szkielet projektu React, zainstalować biblioteki, skonfigurować narzędzia, dodać skrypty i przygotować repo do pracy zespołowej.
+
+---
+
+## 1) Założenia technologiczne
+- **Bundler**: Vite
+- **Język**: TypeScript
+- **UI**: Tailwind CSS + shadcn/ui + lucide-react
+- **Stan**: Zustand (lekki, przewidywalny)
+- **Routing**: React Router
+- **Testy**: Vitest + @testing-library/react + Playwright (E2E)
+- **Jakość**: ESLint + Prettier + Stylelint (dla css-in-files), Husky + lint-staged
+- **CI**: GitHub Actions (build + test)
+- **Importy**: alias `@/*` → `src/*`
+- **Env**: `.env`, `.env.local` + `env.d.ts` + `/.env.sample`
+
+---
+
+## 2) Komendy inicjalizacji (do wykonania w terminalu)
+```bash
+# 1. Vite + React + TS
+npm create vite@latest app -- --template react-ts
+cd app
+npm i
+
+# 2. Tailwind + PostCSS + autoprefixer
+npm i -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# 3. shadcn/ui + biblioteki UI
+npm i -D @types/node
+npm i class-variance-authority tailwind-merge clsx lucide-react
+npm i shadcn-ui@latest
+npx shadcn-ui@latest init
+
+# 4. React Router + Zustand + zod
+npm i react-router-dom zustand zod
+
+# 5. Testy i narzędzia
+npm i -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom
+npm i -D playwright @playwright/test
+
+# 6. ESLint + Prettier + Stylelint + hooki
+npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-import eslint-config-prettier
+npm i -D prettier prettier-plugin-tailwindcss
+npm i -D stylelint stylelint-config-standard stylelint-config-tailwindcss
+npm i -D husky lint-staged
+npx husky init
+
+
+
+
+#Struktura katalogów
+
+app/
+  .husky/
+  .github/workflows/ci.yml
+  public/
+  src/
+    app/               # routing, layouty główne
+    components/        # współdzielone komponenty UI
+    features/          # moduły domenowe (np. payments, accounts)
+    hooks/
+    lib/               # utils, klienty API
+    store/             # Zustand stores
+    styles/            # global.css, tailwind layers
+    pages/             # (opcjonalnie) mapy tras
+    tests/             # setup testów
+    assets/            # ikony, obrazy
+    index.css
+    main.tsx
+    App.tsx
+  .editorconfig
+  .env.sample
+  env.d.ts
+  tailwind.config.js
+  postcss.config.js
+  tsconfig.json
+  tsconfig.paths.json
+  vite.config.ts
+  eslint.config.js
+  stylelint.config.cjs
+  .prettierrc
+  .gitignore
+  package.json
+  README.md
+
+
+
+#Zasady generowania przez RAG (dla Cursora)
+
+Zawsze twórz projekt według powyższych kroków i plików konfiguracyjnych, chyba że zadano inaczej.
+Po inicjalizacji uruchom npm run dev i zweryfikuj, że aplikacja działa (Vite banner w terminalu).
+Dodawaj komponenty shadcn tylko do katalogu src/components/ui.
+Nowe moduły domenowe twórz w src/features/<domain>.
+Dołącz test komponentu, jeśli generujesz nowy komponent UI (Vitest + RTL).
+Zachowaj aliasy importów @/* i trzymaj importy względne ≤ 1 poziom.
+Wszystkie PR powinny przechodzić lint, test, build w CI.
+
+
+#Przykładowe polecenia do Cursora
+„Zainicjuj projekt wg react_project_bootstrap.md i dodaj komponent Button z shadcn/ui.”
+„Dodaj feature accounts z trasą /accounts, listą i widokiem szczegółów.”
+„Skonfiguruj Playwright i dodaj test E2E dla strony głównej.”
+„Dodaj env VITE_API_URL i klienta fetch w src/lib/api.ts z typami Zod.”
