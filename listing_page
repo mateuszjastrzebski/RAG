@@ -1,0 +1,155 @@
+# Wytyczne projektowe dla ekranów list (List Views)
+### Kontekst: Asseco ABP / bankowość internetowa
+Ten dokument definiuje ogólne zasady UX/UI dla ekranów list w systemie bankowości (np. historia transakcji, rachunki, przelewy).  
+RAG powinien stosować te zasady przy generowaniu nowych widoków listowych w podobnym układzie, hierarchii i stylu wizualnym.
+
+---
+
+## 1. Struktura i hierarchia
+
+### Główne zasady
+- Ekrany list prezentują **zbiory powiązanych rekordów** (transakcje, rachunki, zlecenia).
+- Układ jest **dwukolumnowy (desktop)**:
+  - **Lewa kolumna**: nawigacja główna (stała),
+  - **Prawa kolumna**: lista właściwa z nagłówkiem, filtrami i elementami.
+- Główny tytuł ekranu zawsze jest krótki i jednoznaczny (np. *Historia transakcji*, *Przelewy*, *Rachunki*).
+- Nad listą znajduje się **sekcja sterująca** (filtry, sortowanie, przyciski eksportu).
+- Poniżej znajduje się **lista kart lub wierszy**, które:
+  - grupują dane (np. „Dzisiaj”, „Wczoraj”, „10.10.2024”),
+  - pokazują najważniejsze informacje pierwszego poziomu,
+  - mogą się rozwijać (accordion / inline detail).
+
+---
+
+## 2. Struktura sekcji
+
+1. **Nagłówek ekranu**
+   - Tytuł (`Historia transakcji`, `Przelewy`, `Rachunki`)
+   - Opcjonalny przycisk główny (np. `Wykonaj przelew`)
+   - Krótki opis lub sumaryczne dane (np. „Wpływy / Wydatki”)
+
+2. **Panel filtrów i akcji**
+   - Wiersz z filtrami (`zakres dat`, `konto`, `typ transakcji`)
+   - Pole wyszukiwania (`Szukaj`)
+   - Akcje eksportowe (`Pobierz w PDF`, `Pobierz w XLSX`)
+   - Filtry rozwijalne w przycisku (`Filtruj`)
+
+3. **Lista / Tabela wyników**
+   - Wyrównanie: lewa → dane tekstowe, prawa → kwoty / statusy.
+   - Struktura elementu listy:
+     - **Nagłówek**: nazwa kontrahenta / rachunku / produktu
+     - **Podtytuł**: krótki opis (np. „Faktura nr 291/02/2024”)
+     - **Status / typ**: po prawej stronie (np. „Płatność kartą”, „Przelew zwykły”)
+     - **Kwota**: zawsze wyrównana do prawej, kolorystyka zależna od typu (plus/minus)
+   - Grupy dat (`Dzisiaj`, `Wczoraj`, `10.10.2024`) oddzielone cienką linią i nagłówkiem sekcji.
+
+4. **Wiersz rozwijany (expanded row)**  
+   - Po kliknięciu elementu listy, otwiera się **sekcja szczegółów inline** z dodatkowymi informacjami i akcjami (`Pobierz potwierdzenie`, `Ponów przelew`).
+   - Styl: jasnoniebieskie tło (#F5F9FF), zaokrąglone rogi, odstęp 16px.
+
+---
+
+## 3. Układ (layout)
+
+| Element | Pozycja | Opis |
+|----------|----------|------|
+| Sidebar | lewa kolumna (20%) | Nawigacja główna |
+| Treść | prawa kolumna (80%) | Lista i szczegóły |
+| Nagłówek | górna część | Tytuł + przycisk główny |
+| Filtry | pod nagłówkiem | Dropdowny, search, przyciski eksportu |
+| Lista | poniżej filtrów | Grupy dat + rekordy |
+| Szczegóły inline | wewnątrz listy | Rozwijany panel w obrębie rekordu |
+
+---
+
+## 4. Komponenty i wzorce UI
+
+### Filtry i wyszukiwanie
+- Dropdowny mają zaokrąglone rogi (8px) i etykiety (`Ostatnie 90 dni`, `Wszystkie rachunki`).
+- Filtry mają jasne tło, ikonę strzałki i stan hover.
+- Pole wyszukiwania zawiera ikonę lupy po lewej i placeholder „Szukaj”.
+
+### Lista / Rekord
+- Wysokość pojedynczego wiersza: 64–72px.  
+- Odstęp między rekordami: 8px.  
+- Cały wiersz klikalny → rozwija szczegóły.  
+- Kolor tła w hover: `#F8FAFC`.  
+- Ikony po lewej sygnalizują **typ transakcji / status** (np. przelew, wypłata, karta).  
+- Kwoty:
+  - Wpływy: zielony (`#16A34A`)
+  - Wydatki: czerwony (`#DC2626`)
+  - Neutralne: czarny (`#111827`)
+
+### Rozwijane szczegóły
+- Wyróżnione ramką (`1px solid #CCE0FF`) i tłem `#F5F9FF`.
+- Lewa kolumna: dane nadawcy / odbiorcy.  
+- Prawa kolumna: szczegóły transakcji + akcje (`Ponów przelew`, `Pobierz potwierdzenie`).  
+- Akcje z ikonami, niebieski kolor (`#2563EB`).
+
+### Przycisk główny
+- Styl: niebieski solid, promień 8px.  
+- Użycie: tylko 1 primary button na ekran (np. `Wykonaj przelew`).  
+- Pozycja: w nagłówku sekcji lub w prawym górnym rogu.
+
+---
+
+## 5. Kolorystyka i typografia
+
+| Element | Kolor / Styl | Uwagi |
+|----------|---------------|--------|
+| Nagłówki ekranów | #111827, 20–22px, bold | np. „Historia transakcji” |
+| Etykiety filtrów | #6B7280, 14px, regular | „Ostatnie 90 dni” |
+| Teksty listy | #111827, 15–16px | Nazwy firm / kontrahentów |
+| Kwoty dodatnie | #16A34A, semi-bold | |
+| Kwoty ujemne | #DC2626, semi-bold | |
+| Ikony statusów | #475569 | Szare, neutralne |
+| Hover row | #F8FAFC | podświetlenie wiersza |
+| Background szczegółów | #F5F9FF | subtelny kontrast |
+
+---
+
+## 6. Interakcje i zachowanie
+
+- **Kliknięcie wiersza** → rozwija panel inline (płynna animacja, 150–200ms).
+- **Filtr „Ostatnie 90 dni”** – aktualizuje listę w czasie rzeczywistym.
+- **Przycisk „Filtruj”** – otwiera dropdown z dodatkowymi kryteriami.
+- **Pole „Szukaj”** – reaguje po wpisaniu 3 znaków lub Enter.
+- **Eksport PDF/XLSX** – pokazuje loader / stan „Pobieranie…” po kliknięciu.
+- **Sekcje dat** (np. „Dzisiaj”, „Wczoraj”) – zawsze wyróżnione pogrubieniem i większym odstępem nad nagłówkiem.
+
+---
+
+## 7. Zasady generowania przez RAG
+
+RAG powinien:
+1. Stosować strukturę: **Nagłówek → Filtry → Lista → (opcjonalne) Szczegóły inline**.  
+2. Utrzymywać spójność odstępów (16–24px) i rytmu pionowego.  
+3. Dbać, by kwoty były **wyrównane do prawej** i oznaczone kolorystycznie.  
+4. Używać neutralnej, czystej kolorystyki i ikon typu outline.  
+5. Przy generowaniu nowych list:
+   - Zawsze dodawać filtry główne i search,
+   - Grupować elementy wg logicznych sekcji (np. daty, kategorie),
+   - Uwzględniać interakcję rozwijania / podglądu szczegółów inline,
+   - Dodawać akcje kontekstowe po prawej (z ikonami).
+
+---
+
+## 8. Przykładowe polecenia dla RAG
+- „Wygeneruj ekran listy transakcji dla konta firmowego w stylu ABP.”  
+- „Dodaj widok listy przelewów oczekujących w układzie jak `list_view_transactions_01`.”  
+- „Stwórz listę rachunków z podziałem na waluty z zachowaniem układu ABP.”  
+- „Rozbuduj ekran historii transakcji o szczegóły inline po kliknięciu.”  
+
+---
+
+## 9. Screenshoty referencyjne
+| ID | Opis | Typ ekranu |
+|----|------|-------------|
+| `list_view_transactions_01` | Historia transakcji – główny widok listy | referencja wizualna |
+| `list_view_transactions_02` | Historia transakcji – rekord rozwinięty | referencja wizualna |
+| `list_view_transfers_01` | Przelewy – zakładka „Oczekujące” | referencja wizualna |
+| `list_view_accounts_01` | Rachunki – lista kont | referencja wizualna |
+
+---
+
+**Tagi:** `#list_view` `#banking` `#asseco-abp` `#ux-ui` `#layout-guidelines` `#reference_ui`
