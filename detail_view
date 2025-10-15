@@ -1,0 +1,123 @@
+# Wytyczne projektowe dla ekranów szczegółów (Detail Views)
+### Kontekst: Asseco ABP / bankowość internetowa
+Ten dokument definiuje ogólne zasady UX/UI dla ekranów typu „Szczegóły” w systemie bankowości (np. karta, rachunek, lokata, kredyt).  
+RAG powinien stosować te zasady przy generowaniu nowych ekranów w podobnym stylu, układzie i logice działania.
+
+---
+
+## 1. Struktura i hierarchia
+
+### Główne zasady
+- Ekran szczegółów zawsze otwiera się **z kontekstu listy lub kafla** (np. „Karty”, „Rachunki”).
+- Layout jest **dwukolumnowy (desktop)**, z **nawigacją pionową po lewej** i **treścią po prawej**.
+- Tytuł ekranu = nazwa produktu lub usługi (np. „Visa Electron Credit”).
+- Podtytuł / identyfikator (np. „5241 • 8020”) jest zawsze widoczny pod tytułem.
+- Pierwsza sekcja to **podsumowanie stanu**: saldo, blokady, status, posiadacz.
+- Niżej pojawiają się **zakładki kontekstowe** (`Podsumowanie`, `Transakcje`, `Wyciągi`, `Blokady`).
+- Każda zakładka to osobny ekran w tym samym layoucie.
+
+### Struktura sekcji
+1. **Nagłówek ekranu**
+   - Nazwa produktu + typ + ID
+   - Akcje główne (np. „Spłać kartę”, „Zastrzeż na stałe”)
+2. **Sekcja statusu**
+   - Dostępne środki, blokady, minimalna kwota do spłaty
+   - Krótkie komunikaty lub ostrzeżenia
+3. **Sekcja informacji szczegółowych**
+   - Podzielona na bloki:
+     - **Informacje o produkcie**
+     - **Limity / ustawienia**
+     - **Dane właściciela**
+     - **Dodatkowe informacje techniczne**
+4. **Sekcja działań (Actions)**
+   - Przycisk główny akcji (niebieski): `Spłać`, `Zmień`, `Zastrzeż`
+   - Akcje pomocnicze (linki lub przyciski tekstowe): `Kopiuj`, `Zmień`, `Zablokuj`
+5. **Sekcja szczegółów (rozsuwana lub karty)**  
+   - Dane tabelaryczne lub listy (np. numery, daty, statusy)
+   - Bloki mają nagłówki sekcji (`Informacje o karcie`, `Szczegóły`, `Dostępne środki`)
+
+---
+
+## 2. Układ (layout)
+
+| Element | Wyrównanie | Opis |
+|----------|-------------|------|
+| Nawigacja boczna | lewa kolumna (ok. 20%) | Stały sidebar z głównymi kategoriami |
+| Treść główna | prawa kolumna (80%) | Wszystkie dane szczegółowe |
+| Nagłówek treści | top | Nazwa produktu + ikona + ID |
+| Karty zakładek | pod nagłówkiem | Pasek z 3–5 zakładkami, z aktywną zakładką podkreśloną |
+| Sekcje danych | pionowo | Bloki danych z liniowym podziałem i przestrzenią między sekcjami (ok. 24px) |
+
+---
+
+## 3. Komponenty i wzorce UI
+
+### Teksty i dane
+- Nagłówki sekcji – **uppercase + bold**, mała czcionka (np. `INFORMACJE O KARCIE`)
+- Etykiety pól – **regular 13–14px, kolor #6C727F (neutral 600)**
+- Wartości pól – **semi-bold, 15–16px, #1E1E1E**
+- Dane typu waluta / kwota – zawsze z jednostką (np. `549,20 PLN`)
+- Statusy – używają **tagów kolorystycznych**:
+  - Aktywna → niebieski (`status: active`)
+  - Zablokowana → szary (`status: inactive`)
+  - Zastrzeżona → czerwony (`status: alert`)
+
+### Kolory i komunikaty
+| Typ komunikatu | Kolor | Przykład |
+|----------------|--------|-----------|
+| Informacyjny | niebieski (`#0066CC`) | „Minimalna kwota do spłaty wynosi…” |
+| Ostrzeżenie | pomarańczowy (`#F39C12`) | „Zbliża się termin spłaty” |
+| Błąd / blokada | czerwony (`#E74C3C`) | „Zastrzeż na stałe” |
+| Sukces / potwierdzenie | zielony (`#2ECC71`) | „Operacja zakończona pomyślnie” |
+
+### Przycisk główny (Primary Button)
+- Styl: `filled / solid`
+- Kolor: niebieski firmowy (#0066CC)
+- Promień: 8px
+- Tekst: czasownik w trybie rozkazującym („Spłać”, „Zmień”, „Wykonaj”)
+- Pozycja: zawsze w obrębie sekcji, nie w stopce
+
+---
+
+## 4. Interakcje i zachowanie
+
+- Wszystkie przyciski akcji mają **stan hover i disabled**.  
+- Kliknięcie „Zastrzeż” otwiera **modal z potwierdzeniem i opisem konsekwencji**.  
+- Elementy kopiowalne (`Kopiuj`, `Nr karty`) mają wizualne potwierdzenie po kliknięciu (`Skopiowano ✓`).  
+- Zmiana ustawienia (`Zmień`) otwiera **modal boczny** lub **edycję inline**.  
+- Sekcje są **składane (accordion)** tylko jeśli liczba pól > 10.  
+- Dane wrażliwe (np. PIN, numer karty) mogą być **maskowane** i odsłaniane po kliknięciu (`****` → `1234`).  
+
+---
+
+## 5. Zasady semantyki i dostępności (WCAG)
+
+- Kontrast tekstu i tła ≥ 4.5:1.  
+- Wszystkie przyciski muszą mieć **etykietę aria-label**.  
+- Ikony są tylko uzupełnieniem, nigdy jedynym nośnikiem informacji.  
+- Wartości pieniężne czytane przez screen reader z jednostką.  
+- Kluczowe dane (saldo, status) znajdują się w górnej części widoku.
+
+---
+
+## 6. Zasady generowania przez RAG
+
+RAG powinien:
+1. Używać powyższej struktury przy generowaniu dowolnych ekranów „Szczegółów”.  
+2. Zachowywać logikę układu: **nagłówek → stan → dane → działania → szczegóły**.  
+3. Automatycznie dostosować sekcje tematyczne do kontekstu (np. „Karta” → „Informacje o karcie”; „Lokata” → „Warunki lokaty”).  
+4. Wykorzystywać ten sam język wizualny: odstępy, style typografii, kolory komunikatów i przycisków.  
+5. Używać tonacji zgodnej z ABP: profesjonalna, czytelna, neutralna (bez emocjonalnych komunikatów).  
+6. Unikać przeładowania – maks. 3 poziomy hierarchii informacji.  
+
+---
+
+## 7. Przykładowe pytania / polecenia dla RAG
+- „Wygeneruj ekran szczegółów dla lokaty terminowej w stylu ABP.”  
+- „Rozszerz ekran szczegółów karty o sekcję historii płatności.”  
+- „Dodaj nowy ekran szczegółów dla kredytu gotówkowego zachowując układ i stylistykę ABP.”  
+- „Przygotuj widok szczegółów rachunku z uwzględnieniem salda, historii i statusu.”  
+
+---
+
+**Tagi:** `#detail_view` `#banking` `#asseco-abp` `#ux-ui` `#layout-guidelines`
