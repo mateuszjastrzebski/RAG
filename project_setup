@@ -29,11 +29,10 @@ npm i
 npm i -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
-# 3. shadcn/ui + biblioteki UI
+# 3. shadcn/ui + biblioteki UI (nieinteraktywnie)
 npm i -D @types/node
 npm i class-variance-authority tailwind-merge clsx lucide-react
-npm i shadcn-ui@latest
-npx shadcn-ui@latest init
+npx shadcn@latest init --yes --typescript --cwd .
 
 # 4. React Router + Zustand + zod
 npm i react-router-dom zustand zod
@@ -41,6 +40,7 @@ npm i react-router-dom zustand zod
 # 5. Testy i narzędzia
 npm i -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom
 npm i -D playwright @playwright/test
+npx playwright install --with-deps
 
 # 6. ESLint + Prettier + Stylelint + hooki
 npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-import eslint-config-prettier
@@ -48,6 +48,10 @@ npm i -D prettier prettier-plugin-tailwindcss
 npm i -D stylelint stylelint-config-standard stylelint-config-tailwindcss
 npm i -D husky lint-staged
 npx husky init
+
+# Husky + lint-staged pre-commit
+npx husky add .husky/pre-commit "npx lint-staged"
+chmod +x .husky/*
 
 
 
@@ -100,8 +104,196 @@ Zachowaj aliasy importów @/* i trzymaj importy względne ≤ 1 poziom.
 Wszystkie PR powinny przechodzić lint, test, build w CI.
 
 
-#Przykładowe polecenia do Cursora
-„Zainicjuj projekt wg react_project_bootstrap.md i dodaj komponent Button z shadcn/ui.”
-„Dodaj feature accounts z trasą /accounts, listą i widokiem szczegółów.”
-„Skonfiguruj Playwright i dodaj test E2E dla strony głównej.”
-„Dodaj env VITE_API_URL i klienta fetch w src/lib/api.ts z typami Zod.”
+# Ujednolicenie środowiska i deterministyczne instalacje
+
+- Dodaj `.nvmrc` i sekcję `engines` w `package.json` (np. Node 20 LTS) oraz `packageManager`:
+```
+# .nvmrc
+20.11.1
+```
+```
+{
+  "engines": { "node": "20.x", "npm": ">=10" },
+  "packageManager": "npm@10"
+}
+```
+- Na czystym klonie repo używaj `npm ci` (zamiast `npm i`) dla powtarzalnych instalacji.
+- Dodaj `.npmrc` dla deterministycznych wersji i szybszych instalacji:
+```
+save-exact=true
+fund=false
+audit=false
+```
+
+# Skrypty w package.json i hooki git
+
+Dodaj standardowe skrypty i `prepare` dla Husky:
+```
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:ui": "vitest",
+    "test:e2e": "playwright test",
+    "lint": "eslint .",
+    "lint:style": "stylelint \"src/**/*.{css,pcss}\"",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "prepare": "husky"
+  }
+}
+```
+Po inicjalizacji Husky ustaw ścieżkę hooków (bezpieczeństwo macOS):
+```
+git config core.hooksPath .husky
+```
+
+# Tailwind, ESLint, Prettier – konfiguracje bezkonfliktowe
+
+- `tailwind.config.js` – upewnij się, że `content` pokrywa `index.html` i cały `src`:
+```
+export default {
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  theme: { extend: {} },
+  plugins: []
+}
+```
+
+- `eslint.config.js` – konfiguracja flat kompatybilna z TS i React:
+```
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import react from "eslint-plugin-react";
+import hooks from "eslint-plugin-react-hooks";
+import prettier from "eslint-config-prettier";
+
+export default [
+  js.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        project: ["./tsconfig.json"],
+        tsconfigRootDir: import.meta.dirname
+      }
+    },
+    plugins: { react, "react-hooks": hooks },
+    rules: { "react/react-in-jsx-scope": "off" }
+  },
+  prettier
+];
+```
+
+- `.prettierrc` – włącz plugin Tailwind:
+```
+{ "plugins": ["prettier-plugin-tailwindcss"] }
+```
+
+# Alias importów i TS
+
+Spójność aliasu `@/*` w Vite i TS:
+```
+// vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "node:path";
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: { alias: { "@": path.resolve(__dirname, "src") } }
+});
+```
+```
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
+    "types": ["vite/client", "node"]
+  }
+}
+```
+
+# Testy: Vitest/RTL setup i Playwright
+
+- Plik setup dla testów jednostkowych:
+```
+// src/tests/setupTests.ts
+import "@testing-library/jest-dom";
+```
+Dodaj w `package.json` sekcję dla Vitest:
+```
+{
+  "vitest": {
+    "environment": "jsdom",
+    "setupFiles": ["./src/tests/setupTests.ts"]
+  }
+}
+```
+- Po instalacji Playwright uruchom instalację przeglądarek i zależności systemowych:
+```
+npx playwright install --with-deps
+```
+
+# CI: GitHub Actions (build + test)
+
+Dodaj workflow `app/.github/workflows/ci.yml`:
+```
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+        working-directory: app
+      - run: npm run lint && npm run format -w
+        working-directory: app
+      - run: npm run test -- --run
+        working-directory: app
+      - run: npx playwright install --with-deps
+        working-directory: app
+      - run: npm run build
+        working-directory: app
+```
+
+# Zmienne środowiskowe i typy
+
+- Dołącz `/.env.sample`, `env.d.ts` i instrukcję inicjalizacji env:
+```
+cp .env.sample .env
+```
+Nie commituj `*.env.local`.
+
+# Wersje pakietów i kompatybilność (przykładowe pinowanie)
+
+Kluczowe zależności:
+```
+npm i react@18 react-dom@18 react-router-dom@6 zustand@4 zod@3
+npm i -D vite@5 @types/node@20 typescript@5
+npm i -D vitest@1 jsdom@24 @testing-library/react@14 @testing-library/user-event@14 @testing-library/jest-dom@6
+npm i -D playwright@1 @playwright/test@1
+```
+
+# Zalecana sekwencja uruchomienia (bez interakcji)
+
+1. `npm ci` (na klonie) lub `npm i` (po `npm create vite`)
+2. Tailwind (`npm i -D tailwindcss postcss autoprefixer`), `npx tailwindcss init -p`
+3. Konfiguracja Vite/TS/aliasów
+4. ESLint/Prettier/Stylelint + pliki konfiguracyjne
+5. `npx shadcn@latest init --yes --typescript --cwd .`
+6. Testy: Vitest + RTL + `setupTests.ts`
+7. Playwright: `npx playwright install --with-deps`
+8. Husky + lint-staged + `prepare`, `chmod +x .husky/*`
+9. `npm run dev` – weryfikacja
+10. `npm run build` – sanity check
