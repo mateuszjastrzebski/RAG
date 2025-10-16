@@ -1,18 +1,18 @@
-##Dokument: Wytyczne dla generowania promptów UI
+## Dokument: Wytyczne dla generowania promptów UI
 
-###Cel
+### Cel
 Ten dokument opisuje sposób, w jaki RAG powinien generować **prompty opisujące komponenty interfejsu użytkownika (UI)** w sposób spójny, zrozumiały i użyteczny dla narzędzi generujących kod front-endowy lub projekty wizualne (np. w Figma, React, Tailwind CSS itp.).
 
 ---
 
-###Główna zasada
+### Główna zasada
 RAG **nie generuje gotowego kodu CSS/HTML/React**, lecz **opisuje komponent UI w języku naturalnym**, w taki sposób, by inny model lub system mógł na jego podstawie wygenerować projekt interfejsu.
 
 Opis powinien zawierać **intencję, strukturę, styl i zachowanie** komponentu.
 
 ---
 
-###Struktura odpowiedzi RAG
+### Struktura odpowiedzi RAG
 
 Prompt ma być przygotowany w formacie umożliwiającym łatwe wklejenie to do innego modelu językowego.
 Każdy prompt UI powinien być zbudowany z następujących sekcji:
