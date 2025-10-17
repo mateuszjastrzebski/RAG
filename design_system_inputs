@@ -10,4 +10,138 @@ Sekcja Inputy opisuje sposób tworzenia inputów (pól do wprowadzania danych), 
 4. Pole na kod pocztowy
 5. Pole z wyborem daty
 
-### State: active
+
+# Wygląd komponentu input
+
+> **ID:** input/base  
+> **Category:** form controls  
+> **Reference UI:** input_base_01 (screenshot)  
+> **Purpose:** Jednoliniowe pole wprowadzania tekstu z etykietą i tekstem pomocniczym.  
+> **Usage:** Formularze, filtry, dialogi.
+
+---
+
+## 1) Anatomy
+
+1. **Label** – opis pola (nad inputem).
+2. **Field** – kontener z obramowaniem i zaokrągleniami.
+3. **Input text** – treść wpisywana przez użytkownika.
+4. **Supporting text** – pomoc/kontekst (pod polem).
+
+[Label]
+┌───────────────────────────────┐
+│ Input text │
+└───────────────────────────────┘
+Supporting text
+
+
+---
+
+## 2) Layout & Spacing
+
+**Container (cały komponent)**  
+- `display: flex`  
+- `flex-direction: column`  
+- `align-items: flex-start`  
+- `gap: 8px`  
+- `width: 280px` *(możesz nadpisać w kontekście siatki/layoutu)*
+
+**Label**  
+- `display: flex`  
+- `align-items: flex-start`  
+- `gap: 4px`  
+- `align-self: stretch`
+
+**Field (ramka inputa)**  
+- `border-radius: var(--Spacing-2, 8px)`  
+- `border: 1px solid var(--Color-Form-form-border, #6D708D)`  
+- `background: var(--Color-Form-form-background, #FFF)`
+
+**Input text (wewnątrz pola)**  
+- `display: flex`  
+- `padding: 0 8px` *(poziome wcięcia treści)*  
+- `flex-direction: column`  
+- `align-items: flex-start`  
+- `flex: 1 0 0`
+
+**Supporting text**  
+- `display: flex`  
+- `align-items: flex-start`  
+- `gap: 4px`  
+- `align-self: stretch`
+
+---
+
+## 3) Typography (zalecenia)
+
+- **Label:** semibold, -1 stopień względem body (np. 12–13px), uppercase dopuszczalne; kolor neutral-600.  
+- **Input text (value/placeholder):** body 14–16px, kolor neutral-900, placeholder neutral-500.  
+- **Supporting text:** body-12/13, neutral-600; dla błędów – danger-700.
+
+*(Jeśli masz tokeny typografii, podepnij: `--Font-Label`, `--Font-Body`, `--Color-Neutral-*`, `--Color-Danger-*`.)*
+
+---
+
+## 4) States (UX/UI)
+
+> Poniżej stany rekomendowane. Jeśli nie masz jeszcze tokenów, przyjmij nazwy i uzupełnij w DS.
+
+| State       | Border                              | Background                                  | Text/Helper                                  |
+|-------------|-------------------------------------|---------------------------------------------|----------------------------------------------|
+| **Default** | `1px solid var(--Color-Form-form-border, #6D708D)` | `var(--Color-Form-form-background, #FFF)`   | Label `neutral-600`, Value `neutral-900`     |
+| **Hover**   | `1px solid var(--Color-Form-form-border-hover, #565A7A)` | `#FFF`                             | bez zmian                                     |
+| **Focus**   | `1px solid var(--Color-Form-focus, #335CFF)` + **outline/box-shadow** `0 0 0 2px color-mix(in srgb, var(--Color-Form-focus, #335CFF) 20%, transparent)` | `#FFF` | Label może przyjąć `focus` kolor `neutral-700` |
+| **Error**   | `1px solid var(--Color-Form-error, #E74C3C)` | `#FFF` | Supporting text w `danger-700`, ikona ❗ opcjonalnie |
+| **Disabled**| `1px solid color-mix(in srgb, #6D708D 40%, #FFF)` | `color-mix(in srgb, #FFF 60%, #6D708D 10%)` | Label/Value `neutral-500`; kursor `not-allowed` |
+
+**Interakcje:**  
+- Klik na label fokusu­je pole (`for`/`id`).  
+- `Enter` wysyła formularz jeśli jest jedynym polem lub aktywna jest akcja primary.  
+- Walidacja on-blur oraz on-submit; błędy zawsze opisane w *Supporting text*.
+
+---
+
+## 5) Accessibility (A11y)
+
+- Label **połączony** z inputem (`id` + `for`).  
+- Placeholder nie zastępuje labela.  
+- Komunikaty błędów przez `aria-live="polite"` (na *Supporting text*).  
+- Kontrast: tekst i obramowanie vs tło **≥ 4.5:1** (WCAG AA).  
+- Hit area: wysokość pola min. **40px** (desktop), **44px** (touch).
+
+---
+
+## 6) Content rules
+
+- Label w trybie rzeczowym (np. „Imię i nazwisko”).  
+- Placeholder opisuje **format** (np. „Jan Kowalski”), nie powtarza labela.  
+- Supporting text: krótka pomoc, błędy zaczynamy wprost („Wymagane”, „Niepoprawny format”).  
+- Dla pól wrażliwych (hasło, PESEL) – **toggle mask**.
+
+---
+
+## 7) Tokens (mapowanie przykładowe)
+
+```css
+:root {
+  /* Spacing */
+  --Spacing-2: 8px;
+
+  /* Colors */
+  --Color-Form-form-border: #6D708D;
+  --Color-Form-form-background: #FFFFFF;
+  --Color-Form-form-border-hover: #565A7A;
+  --Color-Form-focus: #335CFF;
+  --Color-Form-error: #E74C3C;
+}
+
+
+## 8) Do
+Używaj jednoznacznych labeli i krótkich podpowiedzi.
+Utrzymuj jeden akcent kolorystyczny dla focus.
+Zapewnij min. 40–44 px wysokości pola.
+
+## 9) Don’t
+Nie używaj samego placeholdera zamiast labela.
+Nie mieszaj komunikatów informacyjnych i błędów w jednej linii bez różnicowania koloru.
+Nie ukrywaj informacji o błędzie tylko kolorem (dodaj ikonę/tekst).
