@@ -1,0 +1,13 @@
+# Komponenty Design Systemu Asseco
+
+## Inputy
+Sekcja Inputy opisuje sposób tworzenia inputów (pól do wprowadzania danych), aby były one spójne w każdym generowanym ekranie i procesie.
+
+### Typy inputów
+1. Pole tekstowe
+2. Pole numeryczne
+3. Pole do wprowadzania numeru rachunku bankowego
+4. Pole na kod pocztowy
+5. Pole z wyborem daty
+
+### State: active
