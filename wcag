@@ -1,0 +1,7 @@
+
+## Zasady semantyki i dostępności (WCAG)
+
+- Kontrast tekstu i tła ≥ 4.5:1.  
+- Wszystkie przyciski muszą mieć **etykietę aria-label**.  
+- Ikony są tylko uzupełnieniem, nigdy jedynym nośnikiem informacji.  
+- Wartości pieniężne czytane przez screen reader z jednostką.
