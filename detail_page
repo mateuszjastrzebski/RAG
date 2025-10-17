@@ -71,10 +71,6 @@ RAG powinien stosować te zasady przy generowaniu nowych ekranów w podobnym sty
 | Sukces / potwierdzenie | zielony (`#2ECC71`) | „Operacja zakończona pomyślnie” |
 
 ### Przycisk główny (Primary Button)
-- Styl: `filled / solid`
-- Kolor: niebieski firmowy (#0066CC)
-- Promień: 8px
-- Tekst: czasownik w trybie rozkazującym („Spłać”, „Zmień”, „Wykonaj”)
 - Pozycja: zawsze w obrębie sekcji, nie w stopce
 
 ---
@@ -90,17 +86,7 @@ RAG powinien stosować te zasady przy generowaniu nowych ekranów w podobnym sty
 
 ---
 
-## 5. Zasady semantyki i dostępności (WCAG)
-
-- Kontrast tekstu i tła ≥ 4.5:1.  
-- Wszystkie przyciski muszą mieć **etykietę aria-label**.  
-- Ikony są tylko uzupełnieniem, nigdy jedynym nośnikiem informacji.  
-- Wartości pieniężne czytane przez screen reader z jednostką.  
-- Kluczowe dane (saldo, status) znajdują się w górnej części widoku.
-
----
-
-## 6. Zasady generowania przez RAG
+## 5. Zasady generowania przez RAG
 
 RAG powinien:
 1. Używać powyższej struktury przy generowaniu dowolnych ekranów „Szczegółów”.  
@@ -112,7 +98,7 @@ RAG powinien:
 
 ---
 
-## 7. Przykładowe pytania / polecenia dla RAG
+## 6. Przykładowe pytania / polecenia dla RAG
 - „Wygeneruj ekran szczegółów dla lokaty terminowej w stylu ABP.”  
 - „Rozszerz ekran szczegółów karty o sekcję historii płatności.”  
 - „Dodaj nowy ekran szczegółów dla kredytu gotówkowego zachowując układ i stylistykę ABP.”  
