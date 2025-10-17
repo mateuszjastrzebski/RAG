@@ -57,27 +57,21 @@ Każda sekcja ma:
 ### Zasady układu pól:
 - Pola są ułożone **w jednej kolumnie** lub w **dwóch kolumnach po 50%**, w zależności od treści.
 - W jednej sekcji można mieszać układy (np. pierwsze 2 pola obok siebie, kolejne w pionie).
-- Każdy `input` / `select` ma label powyżej (label distance = 8px).
+- Każdy `input` / `select` wygląda zgodnie z design_system_inputs.md
 - Odstęp między polami pionowo: **24px**.
 - Odstęp między sekcjami: **48–64px**.
 - Checkboxy i opcje (`radio`) umieszczane są zawsze **poniżej** grupy, nie obok.
 
 ### Wyrównanie:
 - Label i input zawsze w jednej osi pionowej.
-- Inputy mają jednakową szerokość w obrębie sekcji.
+- Inputy mają szerokość zgodnei z oczekiwaną wewnątrz długością znaków
 - Przy bardzo długich formularzach stosuj podział na bloki z subtelną separacją (`border-t border-neutral-200 mt-12 pt-8`).
 
 ---
 
 ## 4) Komponenty i zachowania interaktywne
-### Pola wejściowe (Input, Select, Textarea)
-- **Label:** `text-sm font-medium text-neutral-700`
-- **Placeholder:** `text-neutral-400`
-- **Border:** `1px solid #DDE1E6`
-- **Hover:** `border-neutral-400`
-- **Focus:** `border-primary-500 shadow-[0_0_0_1px_#0A6AFD]`
-- **Błąd:** `border-red-500` + opis w `text-red-600 text-sm mt-1`
-- **Disabled:** `bg-neutral-50 text-neutral-500`
+### Inputs
+Zgodnie z design_system_inputs.md
 
 ### Checkbox / Radio
 - Wyrównane do lewej, label po prawej.
