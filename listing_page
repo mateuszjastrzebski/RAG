@@ -65,9 +65,9 @@ RAG powinien stosować te zasady przy generowaniu nowych widoków listowych w po
 ## 4. Komponenty i wzorce UI
 
 ### Filtry i wyszukiwanie
-- Dropdowny mają zaokrąglone rogi (8px) i etykiety (`Ostatnie 90 dni`, `Wszystkie rachunki`).
-- Filtry mają jasne tło, ikonę strzałki i stan hover.
-- Pole wyszukiwania zawiera ikonę lupy po lewej i placeholder „Szukaj”.
+- Dropdowny  (`Ostatnie 90 dni`, `Wszystkie rachunki`).
+- Filtry
+- Pole wyszukiwania 
 
 ### Lista / Rekord
 - Wysokość pojedynczego wiersza: 64–72px.  
@@ -81,34 +81,17 @@ RAG powinien stosować te zasady przy generowaniu nowych widoków listowych w po
   - Neutralne: czarny (`#111827`)
 
 ### Rozwijane szczegóły
-- Wyróżnione ramką (`1px solid #CCE0FF`) i tłem `#F5F9FF`.
 - Lewa kolumna: dane nadawcy / odbiorcy.  
 - Prawa kolumna: szczegóły transakcji + akcje (`Ponów przelew`, `Pobierz potwierdzenie`).  
-- Akcje z ikonami, niebieski kolor (`#2563EB`).
+- Akcje z ikonami
 
 ### Przycisk główny
-- Styl: niebieski solid, promień 8px.  
 - Użycie: tylko 1 primary button na ekran (np. `Wykonaj przelew`).  
 - Pozycja: w nagłówku sekcji lub w prawym górnym rogu.
 
 ---
 
-## 5. Kolorystyka i typografia
-
-| Element | Kolor / Styl | Uwagi |
-|----------|---------------|--------|
-| Nagłówki ekranów | #111827, 20–22px, bold | np. „Historia transakcji” |
-| Etykiety filtrów | #6B7280, 14px, regular | „Ostatnie 90 dni” |
-| Teksty listy | #111827, 15–16px | Nazwy firm / kontrahentów |
-| Kwoty dodatnie | #16A34A, semi-bold | |
-| Kwoty ujemne | #DC2626, semi-bold | |
-| Ikony statusów | #475569 | Szare, neutralne |
-| Hover row | #F8FAFC | podświetlenie wiersza |
-| Background szczegółów | #F5F9FF | subtelny kontrast |
-
----
-
-## 6. Interakcje i zachowanie
+## 5. Interakcje i zachowanie
 
 - **Kliknięcie wiersza** → rozwija panel inline (płynna animacja, 150–200ms).
 - **Filtr „Ostatnie 90 dni”** – aktualizuje listę w czasie rzeczywistym.
@@ -119,7 +102,7 @@ RAG powinien stosować te zasady przy generowaniu nowych widoków listowych w po
 
 ---
 
-## 7. Zasady generowania przez RAG
+## 6. Zasady generowania przez RAG
 
 RAG powinien:
 1. Stosować strukturę: **Nagłówek → Filtry → Lista → (opcjonalne) Szczegóły inline**.  
@@ -134,21 +117,11 @@ RAG powinien:
 
 ---
 
-## 8. Przykładowe polecenia dla RAG
+## 7. Przykładowe polecenia dla RAG
 - „Wygeneruj ekran listy transakcji dla konta firmowego w stylu ABP.”  
 - „Dodaj widok listy przelewów oczekujących w układzie jak `list_view_transactions_01`.”  
 - „Stwórz listę rachunków z podziałem na waluty z zachowaniem układu ABP.”  
 - „Rozbuduj ekran historii transakcji o szczegóły inline po kliknięciu.”  
-
----
-
-## 9. Screenshoty referencyjne
-| ID | Opis | Typ ekranu |
-|----|------|-------------|
-| `list_view_transactions_01` | Historia transakcji – główny widok listy | referencja wizualna |
-| `list_view_transactions_02` | Historia transakcji – rekord rozwinięty | referencja wizualna |
-| `list_view_transfers_01` | Przelewy – zakładka „Oczekujące” | referencja wizualna |
-| `list_view_accounts_01` | Rachunki – lista kont | referencja wizualna |
 
 ---
 
