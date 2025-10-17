@@ -12,15 +12,6 @@ Sekcja Inputy opisuje sposób tworzenia inputów (pól do wprowadzania danych), 
 
 
 # Wygląd komponentu input
-
-> **ID:** input/base  
-> **Category:** form controls  
-> **Reference UI:** input_base_01 (screenshot)  
-> **Purpose:** Jednoliniowe pole wprowadzania tekstu z etykietą i tekstem pomocniczym.  
-> **Usage:** Formularze, filtry, dialogi.
-
----
-
 ## 1) Anatomy
 
 1. **Label** – opis pola (nad inputem).
@@ -54,22 +45,38 @@ Supporting text
 - `align-self: stretch`
 
 **Field (ramka inputa)**  
-- `border-radius: 8px
-- `border: 1px solid #6D708D
-- `background: var(--Color-Form-form-background, #FFF)
+- `border-radius: 8px`
+- `border: 1px solid #6D708D`
+- `background: #FFF`
+- `height: 48px` - dokładna wysokość pola 
+- `min-height: 44px`
 
 **Input text (wewnątrz pola)**  
-- `display: flex`  
 - `padding: 0 8px` *(poziome wcięcia treści)*  
 - `flex-direction: column`  
 - `align-items: flex-start`  
 - `flex: 1 0 0`
+- `font-size: 14px` - rozmiar czcionki dla tekstu w polu
+- `font-weight: 800` - waga czcionki dla tekstu w polu
+- `line-height: auto` - wysokość linii tekstu
+- `color: #242537` - kolor tekstu w polu
+
+**Input placeholder text (wewnątrz pola)**  
+- `padding: 0 8px` *(poziome wcięcia treści)*  
+- `flex-direction: column`  
+- `align-items: flex-start`  
+- `flex: 1 0 0`
+- `font-size: 14px` - rozmiar czcionki dla tekstu w polu
+- `font-weight: 400` - waga czcionki dla tekstu w polu
+- `line-height: auto` - wysokość linii tekstu
+- `color: #6D708D` - kolor tekstu w polu
 
 **Supporting text**  
 - `display: flex`  
 - `align-items: flex-start`  
 - `gap: 4px`  
 - `align-self: stretch`
+- `color: #6D708D`
 
 ---
 
@@ -79,10 +86,12 @@ Supporting text
 
 | State       | Border                              | Background                                  | Text/Helper                                  |
 |-------------|-------------------------------------|---------------------------------------------|----------------------------------------------|
-| **Default** | `1px solid #6D708D` | `var(--Color-Form-form-background, #FFF)`   | Label `neutral-600`, Value `neutral-900`     |
-| **Hover**   | `1px solid #565A7A)` | `#FFF`                             | bez zmian                                     |
+| **Default** | `1px solid #6D708D` | #FFF  | Label `neutral-600`, Value `neutral-900`     |
+| **Hover**   | `1px solid #565A7A)` | #FFF                             | bez zmian                                     |
 | **Focus**   | `1px solid #335CFF)` + **outline/box-shadow** `0 0 0 2px color-mix(in srgb, #335CFF) 20%, transparent)` | `#FFF` | Label może przyjąć `focus` kolor `neutral-700` |
+| **[BRAKUJE]** | **[BRAKUJE]** `transition: [ANIMACJA]` - animacja przejść między stanami | **[BRAKUJE]** | **[BRAKUJE]** |
 | **Error**   | `1px solid #E74C3C)` | `#FFF` | Supporting text w `danger-700`, ikona ❗ opcjonalnie |
+| **[BRAKUJE]** | **[BRAKUJE]** `z-index: [WARSTWA]` - warstwa dla focus outline | **[BRAKUJE]** | **[BRAKUJE]** |
 | **Disabled**| `1px solid color-mix(in srgb, #6D708D 40%, #FFF)` | `color-mix(in srgb, #FFF 60%, #6D708D 10%)` | Label/Value `neutral-500`; kursor `not-allowed` |
 
 **Interakcje:**  
@@ -110,22 +119,6 @@ Supporting text
 - Dla pól wrażliwych (hasło, PESEL) – **toggle mask**.
 
 ---
-
-## 7) Tokens (mapowanie przykładowe)
-
-```css
-:root {
-  /* Spacing */
-  --Spacing-2: 8px;
-
-  /* Colors */
-  --Color-Form-form-border: #6D708D;
-  --Color-Form-form-background: #FFFFFF;
-  --Color-Form-form-border-hover: #565A7A;
-  --Color-Form-focus: #335CFF;
-  --Color-Form-error: #E74C3C;
-}
-
 
 ## 8) Do
 Używaj jednoznacznych labeli i krótkich podpowiedzi.
