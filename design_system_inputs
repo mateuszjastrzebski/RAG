@@ -86,7 +86,7 @@ Supporting text
 
 | State       | Border                              | Background                                  | Text/Helper                                  |
 |-------------|-------------------------------------|---------------------------------------------|----------------------------------------------|
-| **Default** | `1px solid #6D708D` | #FFF  | Label `neutral-600`, Value `neutral-900`     |
+| **Default** | `1px solid #6D708D` | #FFF  |  Label `neutral-600`, Value `neutral-900`     |
 | **Hover**   | `1px solid #565A7A)` | #FFF                             | bez zmian                                     |
 | **Focus**   | `1px solid #335CFF)` + **outline/box-shadow** `0 0 0 2px color-mix(in srgb, #335CFF) 20%, transparent)` | `#FFF` | Label może przyjąć `focus` kolor `neutral-700` |
 | **[BRAKUJE]** | **[BRAKUJE]** `transition: [ANIMACJA]` - animacja przejść między stanami | **[BRAKUJE]** | **[BRAKUJE]** |
